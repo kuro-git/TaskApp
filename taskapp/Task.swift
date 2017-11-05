@@ -17,6 +17,8 @@ class Task: Object {
     
     // 内容
     dynamic var contents = ""
+    // カテゴリー
+    dynamic var category = ""
     
     /// 日時
     dynamic var date = NSDate()

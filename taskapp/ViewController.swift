@@ -10,9 +10,11 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    var searchResults:[String] = []
     // Realmインスタンスを取得する
     let realm = try! Realm()  // ←追加
     
@@ -28,6 +30,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        searchBar = UISearchBar()
+        //searchBar.delegate = self
+        //searchBar.placeholder = "検索"
+        //searchBar.setValue("キャンセル", forKey: "_cancelButtonText")
+        //searchBar.tintColor = UIColor.red
+        
+        tableView.tableHeaderView = searchBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,6 +51,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("tableView_dataSource_numberOfRows")
         return taskArray.count  // ←追加する
+        //return searchResults.count
     }
     
     // 各セルの内容を返すメソッド
@@ -58,7 +69,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let dateString:String = formatter.string(from: task.date as Date)
-        cell.detailTextLabel?.text = dateString
+        cell.detailTextLabel?.text = dateString + task.category
         
         return cell
     }
